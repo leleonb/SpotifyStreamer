@@ -39,11 +39,14 @@ public class MusicInfoAdapter extends ArrayAdapter<MusicInfo> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_visual_info, parent, false);
         }
 
-        //TODO: Same image size for every item
         ImageView imageView = (ImageView) convertView.findViewById(R.id.list_item_image);
 
         if (!musicInfoItem.getImage().isEmpty()) {
-            Picasso.with(parent.getContext()).load(musicInfoItem.getImage()).into(imageView);
+            Picasso.with(parent.getContext())
+                    .load(musicInfoItem.getImage())
+                    //TODO: Resource
+                    .resize(150, 150)
+                    .into(imageView);
         }
 
         TextView mainTextView = (TextView) convertView.findViewById(R.id.list_item_text_main);

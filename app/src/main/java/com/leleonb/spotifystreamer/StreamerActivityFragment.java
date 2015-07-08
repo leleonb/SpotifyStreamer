@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import java.util.ArrayList;
 
@@ -44,36 +45,50 @@ public class StreamerActivityFragment extends Fragment {
         ListView artistsView = (ListView) rootView.findViewById(R.id.listview_artists);
         artistsView.setAdapter(mArtistAdapter);
 
-        SpotifyApi api = new SpotifyApi();
+        //TODO: Align with the results list / Visual contrast between both
+        SearchView searchView = (SearchView) rootView.findViewById(R.id.search_artist);
+        searchView.setOnQueryTextListener(
+                new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        SpotifyApi api = new SpotifyApi();
 
-        SpotifyService spotify = api.getService();
+                        SpotifyService spotify = api.getService();
 
-        //TODO: Should be triggered by a search box
-        spotify.searchArtists("artist:abba", new Callback<ArtistsPager>() {
-            @Override
-            public void success(ArtistsPager artistsPager, Response response) {
-                Log.v(LOG_TAG, "Artists: " + artistsPager.toString());
+                        spotify.searchArtists("artist:" + query, new Callback<ArtistsPager>() {
+                            @Override
+                            public void success(ArtistsPager artistsPager, Response response) {
+                                Log.v(LOG_TAG, "Artists: " + artistsPager.toString());
 
-                if (artistsPager.artists.total > 0) {
-                    mArtistAdapter.clear();
+                                if (artistsPager.artists.total > 0) {
+                                    mArtistAdapter.clear();
 
-                    for (Artist artist : artistsPager.artists.items) {
-                        String url = "";
-                        if (artist.images.size() > 0) {
-                            url = artist.images.get(0).url;
-                        }
+                                    for (Artist artist : artistsPager.artists.items) {
+                                        String url = "";
+                                        if (artist.images.size() > 0) {
+                                            url = artist.images.get(0).url;
+                                        }
 
-                        MusicInfo musicInfo = new MusicInfo(artist.name, url);
-                        mArtistAdapter.add(musicInfo);
+                                        MusicInfo musicInfo = new MusicInfo(artist.name, url);
+                                        mArtistAdapter.add(musicInfo);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.d(LOG_TAG, "Failure retrieving artists." + error.toString());
+                            }
+                        });
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        return false;
                     }
                 }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d(LOG_TAG, "Failure retrieving artists." + error.toString());
-            }
-        });
+        );
 
         artistsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
