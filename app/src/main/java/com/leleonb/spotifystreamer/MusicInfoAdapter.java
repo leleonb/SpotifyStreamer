@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+//TODO Put my user name in all files
 /**
  * Created by usuario on 05/07/2015.
  */

@@ -46,6 +46,7 @@ public class StreamerActivityFragment extends Fragment {
         artistsView.setAdapter(mArtistAdapter);
 
         //TODO: Align with the results list / Visual contrast between both
+        //TODO Improve the visuals of the search bar
         SearchView searchView = (SearchView) rootView.findViewById(R.id.search_artist);
         searchView.setOnQueryTextListener(
                 new SearchView.OnQueryTextListener() {
@@ -55,6 +56,8 @@ public class StreamerActivityFragment extends Fragment {
 
                         SpotifyService spotify = api.getService();
 
+                        //FIXME: App displays a message (for example, a toast) if the artist name/top tracks list for an artist is not found (asks to refine search)
+                        //FIXME: App implements Artist Search + GetTopTracks API Requests (Using the Spotify wrapper or by making a HTTP request and deserializing the JSON data)
                         spotify.searchArtists("artist:" + query, new Callback<ArtistsPager>() {
                             @Override
                             public void success(ArtistsPager artistsPager, Response response) {
@@ -70,6 +73,8 @@ public class StreamerActivityFragment extends Fragment {
                                         }
 
                                         MusicInfo musicInfo = new MusicInfo(artist.name, url);
+
+                                        //FIXME: App stores the most recent top tracks query results and their respective metadata (track name, artist name, album name) locally in list. The queried results are retained on rotation.
                                         mArtistAdapter.add(musicInfo);
                                     }
                                 }
@@ -96,6 +101,10 @@ public class StreamerActivityFragment extends Fragment {
                 MusicInfo musicInfo = (MusicInfo) adapterView.getItemAtPosition(position);
                 if (musicInfo != null) {
                     Log.v(LOG_TAG, "Artist " + position + " selected : " + musicInfo.getMainText());
+                    //FIXME: [Phone] UI contains a screen for displaying the top tracks for a selected artist
+                    //FIXME: Individual track layout contains - Album art thumbnail, track name, album name
+                    //FIXME: When an artist is selected, app launches the “Top Tracks” View
+                    //FIXME: App displays a list of top tracks
                 }
 
             }

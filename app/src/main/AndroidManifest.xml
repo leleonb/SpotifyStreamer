@@ -16,6 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TracksActivity"
+            android:label="@string/title_activity_tracks"
+            android:parentActivityName=".StreamerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.leleonb.spotifystreamer.StreamerActivity" />
+        </activity>
     </application>
 
 </manifest>
+
+
