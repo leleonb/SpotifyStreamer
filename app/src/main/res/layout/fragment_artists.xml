@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:iconifiedByDefault="false"
-        android:queryHint="@string/hint_artist"/>
+        android:queryHint="@string/hint_artist"
+        style="@style/Base.Widget.AppCompat.SearchView"/>
 
     <ListView
         android:id="@+id/listview_artists"

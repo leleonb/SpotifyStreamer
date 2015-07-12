@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2013 The Android Open Source Project
+ */
 package com.leleonb.spotifystreamer;
 
 import android.support.v7.app.ActionBarActivity;
@@ -5,13 +8,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
-public class StreamerActivity extends ActionBarActivity {
+/**
+ * Contains the artist search fragment
+ */
+public class ArtistsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_streamer);
+        setContentView(R.layout.activity_artists);
     }
 
 

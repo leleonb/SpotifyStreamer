@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2013 The Android Open Source Project
+ */
 package com.leleonb.spotifystreamer;
 
 import android.support.v7.app.ActionBarActivity;
@@ -5,7 +8,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
+/**
+ * Contains the top tracks list
+ */
 public class TracksActivity extends ActionBarActivity {
 
     @Override
