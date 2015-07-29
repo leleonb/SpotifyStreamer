@@ -17,6 +17,20 @@ public class TracksActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracks);
+
+        if (savedInstanceState == null) {
+
+            Bundle args = new Bundle();
+            args.putParcelable(ArtistsActivityFragment.KEY_ARTIST, getIntent().getParcelableExtra(
+                    ArtistsActivityFragment.KEY_ARTIST));
+
+            TracksActivityFragment fragment = new TracksActivityFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.tracks_detail_container, fragment)
+                    .commit();
+        }
     }
 
 

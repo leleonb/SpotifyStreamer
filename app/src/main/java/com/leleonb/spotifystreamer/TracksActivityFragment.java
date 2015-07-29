@@ -59,10 +59,13 @@ public class TracksActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
         if(savedInstanceState == null || !savedInstanceState.containsKey(KEY_TRACKS)) {
+            Log.v(LOG_TAG, "onCreate without saved: ");
             mTracks = new ArrayList<>();
         }
         else {
+            Log.v(LOG_TAG, "onCreate: ");
             mTracks = savedInstanceState.getParcelableArrayList(KEY_TRACKS);
         }
     }
@@ -72,7 +75,12 @@ public class TracksActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_tracks, container, false);
 
-        Intent intent = getActivity().getIntent();
+        ArtistInfo artistInfo = null;
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            artistInfo = arguments.getParcelable(ArtistsActivityFragment.KEY_ARTIST);
+        }
 
         final TracksAdapter tracksAdapter = new TracksAdapter(
                 getActivity(),
@@ -81,12 +89,9 @@ public class TracksActivityFragment extends Fragment {
         ListView tracksView = (ListView) rootView.findViewById(R.id.listview_tracks);
         tracksView.setAdapter(tracksAdapter);
 
-        if (mTracks.isEmpty() && intent != null && intent.hasExtra(
-                ArtistsActivityFragment.KEY_ARTIST)) {
-            final String artistId = ((ArtistInfo)intent.getParcelableExtra(
-                    ArtistsActivityFragment.KEY_ARTIST)).getId();
-            final String artistName = ((ArtistInfo)intent.getParcelableExtra(
-                    ArtistsActivityFragment.KEY_ARTIST)).getName();
+        if (mTracks.isEmpty() && artistInfo != null) {
+            final String artistId = artistInfo.getId();
+            final String artistName = artistInfo.getName();
 
             Log.v(LOG_TAG, "Loading tracks for artist " + artistId);
 

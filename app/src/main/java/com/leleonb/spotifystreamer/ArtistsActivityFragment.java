@@ -4,7 +4,6 @@
 package com.leleonb.spotifystreamer;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -24,7 +23,6 @@ import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.ArtistsPager;
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -42,6 +40,10 @@ public class ArtistsActivityFragment extends Fragment {
     private List<ArtistInfo> mArtists;
 
     public ArtistsActivityFragment() {
+    }
+
+    public interface Callback {
+        void onItemSelected(ArtistInfo artistInfo);
     }
 
     @Override
@@ -78,7 +80,7 @@ public class ArtistsActivityFragment extends Fragment {
 
                         SpotifyService spotify = api.getService();
 
-                        spotify.searchArtists("artist:" + query, new Callback<ArtistsPager>() {
+                        spotify.searchArtists("artist:" + query, new retrofit.Callback<ArtistsPager>() {
                             @Override
                             public void success(ArtistsPager artistsPager, Response response) {
                                 artistAdapter.clear();
@@ -130,10 +132,8 @@ public class ArtistsActivityFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 ArtistInfo artistInfo = (ArtistInfo) adapterView.getItemAtPosition(position);
                 if (artistInfo != null) {
-                    Intent intent = new Intent(getActivity(), TracksActivity.class)
-                            .putExtra(KEY_ARTIST, artistInfo);
-
-                    startActivity(intent);
+                    ((Callback) getActivity())
+                            .onItemSelected(artistInfo);
                 }
 
             }

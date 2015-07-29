@@ -3,20 +3,38 @@
  */
 package com.leleonb.spotifystreamer;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 /**
  * Contains the artist search fragment
  */
-public class ArtistsActivity extends ActionBarActivity {
+public class ArtistsActivity extends ActionBarActivity implements ArtistsActivityFragment.Callback{
+
+    private static final String TRACKSFRAGMENT_TAG = "TFTAG";
+    private final String LOG_TAG = ArtistsActivity.class.getSimpleName();
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artists);
+
+        if (findViewById(R.id.tracks_detail_container) != null) {
+            mTwoPane = true;
+
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.tracks_detail_container, new TracksActivityFragment(), TRACKSFRAGMENT_TAG)
+                        .commit();
+            }
+        } else {
+            mTwoPane = false;
+            getSupportActionBar().setElevation(0f);
+        }
     }
 
 
@@ -40,5 +58,24 @@ public class ArtistsActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(ArtistInfo artistInfo) {
+        if (mTwoPane) {
+            Bundle args = new Bundle();
+            args.putParcelable(ArtistsActivityFragment.KEY_ARTIST, artistInfo);
+
+            TracksActivityFragment fragment = new TracksActivityFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.tracks_detail_container, fragment, TRACKSFRAGMENT_TAG)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, TracksActivity.class)
+                    .putExtra(ArtistsActivityFragment.KEY_ARTIST, artistInfo);
+            startActivity(intent);
+        }
     }
 }
