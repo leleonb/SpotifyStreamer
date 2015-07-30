@@ -6,7 +6,7 @@ package com.leleonb.spotifystreamer;
 
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +42,7 @@ public class ArtistsActivityFragment extends Fragment {
     public ArtistsActivityFragment() {
     }
 
+    //TODO: Rename
     public interface Callback {
         void onItemSelected(ArtistInfo artistInfo);
     }
@@ -51,8 +52,7 @@ public class ArtistsActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(savedInstanceState == null || !savedInstanceState.containsKey(KEY_ARTISTS)) {
             mArtists = new ArrayList<>();
-        }
-        else {
+        } else {
             mArtists = savedInstanceState.getParcelableArrayList(KEY_ARTISTS);
         }
     }

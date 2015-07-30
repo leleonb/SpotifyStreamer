@@ -3,16 +3,19 @@
  */
 package com.leleonb.spotifystreamer;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 /**
  * Contains the artist search fragment
  */
-public class ArtistsActivity extends ActionBarActivity implements ArtistsActivityFragment.Callback{
+public class ArtistsActivity extends ActionBarActivity implements
+        ArtistsActivityFragment.Callback, TracksActivityFragment.TracksCallback {
 
     private static final String TRACKSFRAGMENT_TAG = "TFTAG";
     private final String LOG_TAG = ArtistsActivity.class.getSimpleName();
@@ -27,7 +30,7 @@ public class ArtistsActivity extends ActionBarActivity implements ArtistsActivit
             mTwoPane = true;
 
             if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction()
+                getFragmentManager().beginTransaction()
                         .replace(R.id.tracks_detail_container, new TracksActivityFragment(), TRACKSFRAGMENT_TAG)
                         .commit();
             }
@@ -69,13 +72,31 @@ public class ArtistsActivity extends ActionBarActivity implements ArtistsActivit
             TracksActivityFragment fragment = new TracksActivityFragment();
             fragment.setArguments(args);
 
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
                     .replace(R.id.tracks_detail_container, fragment, TRACKSFRAGMENT_TAG)
                     .commit();
         } else {
             Intent intent = new Intent(this, TracksActivity.class)
                     .putExtra(ArtistsActivityFragment.KEY_ARTIST, artistInfo);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onTrackSelected(TrackInfo trackInfo) {
+
+        FragmentManager fragmentManager = getFragmentManager();
+        NowPlayingFragment fragment = new NowPlayingFragment();
+
+        if (mTwoPane) {
+            Log.v(LOG_TAG, "Showing Dialog");
+
+            Bundle args = new Bundle();
+            args.putParcelable(TracksActivityFragment.KEY_TRACK, trackInfo);
+            fragment.setArguments(args);
+
+            //TODO: Use resource (title)
+            fragment.show(fragmentManager, "Now Playing");
         }
     }
 }

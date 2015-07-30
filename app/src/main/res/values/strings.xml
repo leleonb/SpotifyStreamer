@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="hint_artist">Search Artist</string>
     <string name="title_activity_tracks">Top 10 Tracks</string>
+    <string name="title_activity_now_playing">Now Playing</string>
     <string name="artists_no_results">No artists found. Please refine search.</string>
     <string name="tracks_no_results">No top tracks found. Please select another artist.</string>
     <string name="artists_retrieve_failure">Network issue retrieving artists data. Please try again.</string>

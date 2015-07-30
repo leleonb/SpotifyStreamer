@@ -6,12 +6,13 @@ package com.leleonb.spotifystreamer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import retrofit.client.Response;
 public class TracksActivityFragment extends Fragment {
 
     public static final String KEY_TRACKS = "tracks";
+    public static final String KEY_TRACK = "track";
     public static final String TOP_TRACKS_COUNTRY_CODE = "US";
 
     private final String LOG_TAG = TracksActivityFragment.class.getSimpleName();
@@ -42,6 +44,10 @@ public class TracksActivityFragment extends Fragment {
     private List<TrackInfo> mTracks;
 
     public TracksActivityFragment() {
+    }
+
+    public interface TracksCallback {
+        void onTrackSelected(TrackInfo trackInfo);
     }
 
     @Override
@@ -59,13 +65,9 @@ public class TracksActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
         if(savedInstanceState == null || !savedInstanceState.containsKey(KEY_TRACKS)) {
-            Log.v(LOG_TAG, "onCreate without saved: ");
             mTracks = new ArrayList<>();
-        }
-        else {
-            Log.v(LOG_TAG, "onCreate: ");
+        } else {
             mTracks = savedInstanceState.getParcelableArrayList(KEY_TRACKS);
         }
     }
@@ -144,6 +146,18 @@ public class TracksActivityFragment extends Fragment {
 
             });
         }
+
+        tracksView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                TrackInfo trackInfo = (TrackInfo) adapterView.getItemAtPosition(position);
+                if (trackInfo != null) {
+                    ((TracksCallback) getActivity())
+                            .onTrackSelected(trackInfo);
+                }
+
+            }
+        });
 
         return rootView;
     }

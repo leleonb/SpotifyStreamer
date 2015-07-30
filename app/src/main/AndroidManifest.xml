@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leleonb.spotifystreamer" >
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,6 +24,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ArtistsActivity" />
+        </activity>
+        <activity
+            android:name=".NowPlayingActivity"
+            android:label="@string/title_activity_now_playing"
+            android:parentActivityName=".TracksActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".TracksActivity" />
         </activity>
     </application>
 

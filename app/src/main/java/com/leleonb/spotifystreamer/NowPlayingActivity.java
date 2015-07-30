@@ -3,8 +3,6 @@
  */
 package com.leleonb.spotifystreamer;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -14,10 +12,9 @@ import android.view.MenuItem;
 /**
  * Contains the top tracks list
  */
-public class TracksActivity extends ActionBarActivity implements
-        TracksActivityFragment.TracksCallback{
+public class NowPlayingActivity extends ActionBarActivity {
 
-    private final String LOG_TAG = TracksActivity.class.getSimpleName();
+    private final String LOG_TAG = NowPlayingActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +22,12 @@ public class TracksActivity extends ActionBarActivity implements
         setContentView(R.layout.activity_tracks);
 
         if (savedInstanceState == null) {
-
+            Log.v(LOG_TAG, "Creating player activity");
             Bundle args = new Bundle();
-            args.putParcelable(ArtistsActivityFragment.KEY_ARTIST, getIntent().getParcelableExtra(
-                    ArtistsActivityFragment.KEY_ARTIST));
+            args.putParcelable(TracksActivityFragment.KEY_TRACK, getIntent().getParcelableExtra(
+                    TracksActivityFragment.KEY_TRACK));
 
-            TracksActivityFragment fragment = new TracksActivityFragment();
+            NowPlayingFragment fragment = new NowPlayingFragment();
             fragment.setArguments(args);
 
             getFragmentManager().beginTransaction()
@@ -60,14 +57,5 @@ public class TracksActivity extends ActionBarActivity implements
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onTrackSelected(TrackInfo trackInfo) {
-        Log.v(LOG_TAG, "Showing Dialog as new screen");
-        Intent intent = new Intent(this, NowPlayingActivity.class)
-                .putExtra(TracksActivityFragment.KEY_TRACK, trackInfo);
-        startActivity(intent);
-
     }
 }
