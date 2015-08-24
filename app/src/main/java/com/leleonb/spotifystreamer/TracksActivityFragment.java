@@ -47,7 +47,8 @@ public class TracksActivityFragment extends Fragment {
     }
 
     public interface TracksCallback {
-        void onTrackSelected(TrackInfo trackInfo);
+        //void onTrackSelected(TrackInfo trackInfo);
+        void onTrackSelected(int postition, List<TrackInfo> tracks);
     }
 
     @Override
@@ -117,7 +118,7 @@ public class TracksActivityFragment extends Fragment {
                                     track.album.images);
 
                             TrackInfo trackInfo = new TrackInfo(track.name, track.album.name,
-                                    artistName, urlSmall, urlLarge, track.preview_url);
+                                    artistName, urlSmall, urlLarge, track.preview_url, track.duration_ms);
 
                             mTracks.add(trackInfo);
                         }
@@ -150,11 +151,11 @@ public class TracksActivityFragment extends Fragment {
         tracksView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                TrackInfo trackInfo = (TrackInfo) adapterView.getItemAtPosition(position);
-                if (trackInfo != null) {
+                //TrackInfo trackInfo = (TrackInfo) adapterView.getItemAtPosition(position);
+                //if (trackInfo != null) {
                     ((TracksCallback) getActivity())
-                            .onTrackSelected(trackInfo);
-                }
+                            .onTrackSelected(position, mTracks);
+                //}
 
             }
         });

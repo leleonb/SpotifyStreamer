@@ -24,8 +24,9 @@ public class NowPlayingActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             Log.v(LOG_TAG, "Creating player activity");
             Bundle args = new Bundle();
-            args.putParcelable(TracksActivityFragment.KEY_TRACK, getIntent().getParcelableExtra(
+            args.putParcelableArrayList(TracksActivityFragment.KEY_TRACK, getIntent().getParcelableArrayListExtra(
                     TracksActivityFragment.KEY_TRACK));
+            args.putInt("position", getIntent().getIntExtra("position", 0));
 
             NowPlayingFragment fragment = new NowPlayingFragment();
             fragment.setArguments(args);

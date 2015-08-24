@@ -17,15 +17,17 @@ public class TrackInfo implements Parcelable {
     private String mSmallImageUrl;
     private String mLargeImageUrl;
     private String mPreviewUrl;
+    private long mDuration;
 
     public TrackInfo(String name, String albumName, String artistName, String smallImageUrl,
-                     String largeImageUrl, String previewUrl) {
+                     String largeImageUrl, String previewUrl, long duration) {
         this.mName = name;
         this.mAlbumName = albumName;
         this.mArtistName = artistName;
         this.mSmallImageUrl = smallImageUrl;
         this.mLargeImageUrl = largeImageUrl;
         this.mPreviewUrl = previewUrl;
+        this.mDuration = duration;
     }
 
     private TrackInfo(Parcel parcel){
@@ -35,6 +37,7 @@ public class TrackInfo implements Parcelable {
         this.mSmallImageUrl = parcel.readString();
         this.mLargeImageUrl = parcel.readString();
         this.mPreviewUrl = parcel.readString();
+        this.mDuration = parcel.readLong();
     }
 
     @Override
@@ -50,6 +53,7 @@ public class TrackInfo implements Parcelable {
         dest.writeString(this.mSmallImageUrl);
         dest.writeString(this.mLargeImageUrl);
         dest.writeString(this.mPreviewUrl);
+        dest.writeLong(this.mDuration);
     }
 
     public static final Parcelable.Creator<TrackInfo> CREATOR =
@@ -113,5 +117,13 @@ public class TrackInfo implements Parcelable {
 
     public void setArtistName(String artistName) {
         this.mArtistName = artistName;
+    }
+
+    public long getmDuration() {
+        return mDuration;
+    }
+
+    public void setmDuration(long mDuration) {
+        this.mDuration = mDuration;
     }
 }

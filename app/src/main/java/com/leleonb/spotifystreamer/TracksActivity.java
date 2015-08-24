@@ -3,13 +3,16 @@
  */
 package com.leleonb.spotifystreamer;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains the top tracks list
@@ -63,10 +66,13 @@ public class TracksActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void onTrackSelected(TrackInfo trackInfo) {
+    public void onTrackSelected(int position, List<TrackInfo> tracks) {
         Log.v(LOG_TAG, "Showing Dialog as new screen");
+
         Intent intent = new Intent(this, NowPlayingActivity.class)
-                .putExtra(TracksActivityFragment.KEY_TRACK, trackInfo);
+                .putParcelableArrayListExtra(TracksActivityFragment.KEY_TRACK, (ArrayList<? extends Parcelable>) tracks)
+                .putExtra("position", position);
+
         startActivity(intent);
 
     }

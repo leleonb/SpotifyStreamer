@@ -6,10 +6,14 @@ package com.leleonb.spotifystreamer;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains the artist search fragment
@@ -83,7 +87,7 @@ public class ArtistsActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void onTrackSelected(TrackInfo trackInfo) {
+    public void onTrackSelected(int position, List<TrackInfo> tracks) {
 
         FragmentManager fragmentManager = getFragmentManager();
         NowPlayingFragment fragment = new NowPlayingFragment();
@@ -92,7 +96,8 @@ public class ArtistsActivity extends ActionBarActivity implements
             Log.v(LOG_TAG, "Showing Dialog");
 
             Bundle args = new Bundle();
-            args.putParcelable(TracksActivityFragment.KEY_TRACK, trackInfo);
+            args.putParcelableArrayList(TracksActivityFragment.KEY_TRACK, (ArrayList<? extends Parcelable>) tracks);
+            args.putInt("position", position);
             fragment.setArguments(args);
 
             //TODO: Use resource (title)
