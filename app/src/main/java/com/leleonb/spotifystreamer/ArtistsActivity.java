@@ -100,7 +100,6 @@ public class ArtistsActivity extends ActionBarActivity implements
             args.putInt("position", position);
             fragment.setArguments(args);
 
-            //TODO: Use resource (title)
             fragment.show(fragmentManager, "Now Playing");
         }
     }

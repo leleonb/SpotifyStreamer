@@ -118,14 +118,18 @@ public class NowPlayingFragment extends DialogFragment {
             mPlayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mMediaPlayer.isPlaying()) {
-                        mMediaPlayer.pause();
-                        ((ImageButton) v).setImageResource(android.R.drawable.ic_media_play);
+                    if (mMediaPlayer != null) {
+                        if (mMediaPlayer.isPlaying()) {
+                            mMediaPlayer.pause();
+                            ((ImageButton) v).setImageResource(android.R.drawable.ic_media_play);
+                        } else {
+                            mMediaPlayer.start();
+                            ((ImageButton) v).setImageResource(android.R.drawable.ic_media_pause);
+                        }
                     } else {
-                        mMediaPlayer.start();
-                        ((ImageButton) v).setImageResource(android.R.drawable.ic_media_pause);
+                        setPlayer(mCurrentTrack);
+                        setSeeker();
                     }
-
                 }
             });
 
@@ -183,7 +187,9 @@ public class NowPlayingFragment extends DialogFragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mMediaPlayer.seekTo(progress * 1000);
+                    if (mMediaPlayer != null) {
+                        mMediaPlayer.seekTo(progress * 1000);
+                    }
                 }
             }
 
@@ -224,9 +230,12 @@ public class NowPlayingFragment extends DialogFragment {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 Log.v(LOG_TAG, "Start player");
+                mPlayButton = (ImageButton) mRootView.findViewById(R.id.track_player_play);
+                mPlayButton.setImageResource(android.R.drawable.ic_media_pause);
                 mMediaPlayer.seekTo(mCurrentPosition * 1000);
                 mMediaPlayer.start();
                 if (!mIsPlaying) {
+                    mPlayButton.setImageResource(android.R.drawable.ic_media_play);
                     mMediaPlayer.pause();
                 }
             }
@@ -252,18 +261,28 @@ public class NowPlayingFragment extends DialogFragment {
     @Override
     public void onStop() {
         super.onStop();
-        mMediaPlayer.stop();
-        mMediaPlayer.release();
-        mMediaPlayer = null;
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        Log.v(LOG_TAG, "Save state");
         outState.putParcelableArrayList(TracksActivityFragment.KEY_TRACK, (ArrayList<? extends Parcelable>) mTracks);
         outState.putInt("position", mTrackNumber);
         outState.putInt("time", mCurrentPosition);
-        outState.putBoolean("playing", mMediaPlayer.isPlaying());
+        outState.putBoolean("playing", mMediaPlayer != null && mMediaPlayer.isPlaying());
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onResume() {
+        Log.v(LOG_TAG, "On resume");
+        super.onResume();
+        mPlayButton = (ImageButton) mRootView.findViewById(R.id.track_player_play);
+        mPlayButton.setImageResource(android.R.drawable.ic_media_play);
+    }
 }

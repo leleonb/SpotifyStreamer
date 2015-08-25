@@ -42,7 +42,6 @@ public class ArtistsActivityFragment extends Fragment {
     public ArtistsActivityFragment() {
     }
 
-    //TODO: Rename
     public interface Callback {
         void onItemSelected(ArtistInfo artistInfo);
     }
